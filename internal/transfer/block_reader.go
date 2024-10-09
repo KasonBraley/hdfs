@@ -143,7 +143,7 @@ func (br *BlockReader) Skip(n int64) error {
 		br.datanodes.recordFailure(err)
 	}
 
-	return err
+	return fmt.Errorf("hdfs: %w", err)
 }
 
 // Close implements io.Closer.
@@ -217,7 +217,7 @@ func (br *BlockReader) connectNext() error {
 			}
 
 			conn.Close()
-			return err
+			return fmt.Errorf("hdfs: %w", err)
 		}
 	}
 

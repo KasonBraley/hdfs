@@ -248,11 +248,11 @@ func (f *FileReader) ReadAt(b []byte, off int64) (int, error) {
 
 	// For some reason, os.File.ReadAt returns io.EOF in this case instead of
 	// io.ErrUnexpectedEOF.
-	if err == io.ErrUnexpectedEOF {
-		err = io.EOF
+	if errors.Is(err, io.ErrUnexpectedEOF) {
+		return n, io.EOF
 	}
 
-	return n, err
+	return n, fmt.Errorf("hdfs: %w", err)
 }
 
 // Readdir reads the contents of the directory associated with file and returns
